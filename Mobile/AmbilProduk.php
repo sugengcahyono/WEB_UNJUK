@@ -23,7 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Email ditemukan, Anda dapat mengembalikan respons sukses
             $response['status'] = "success";
             $response['message'] = "Data valid";
-            $response['data'] = $result->fetch_assoc();
+            $response['data'] = array(); // Inisialisasi array kosong
+
+while ($row = $result->fetch_assoc()) {
+    $response['data'][] = $row; // Menambahkan setiap baris ke dalam array $response['data']
+}
             
         } else {
             // Email tidak ditemukan, Anda dapat mengembalikan respons gagal
