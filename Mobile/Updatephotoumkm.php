@@ -11,27 +11,27 @@ header("Content-Type: application/json");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // post request
-    $idakun = $_POST['id_akun'];
+    $namaumkm = $_POST['nama_umkm'];
     $photo = $_POST['photo'];
 
     // cek email exist atau tidak
-    $sql = "SELECT id_akun FROM umkm WHERE id_akun = '$id_akun' LIMIT 1";
+    $sql = "SELECT nama_umkm FROM umkm WHERE nama_umkm = '$namaumkm' LIMIT 1";
     if ($conn->query($sql)->num_rows == 1) {
         // saving photo
         $photo = str_replace('data:image/png;base64,', '', $photo);
         $photo = str_replace(' ', '+', $photo);
         $data = base64_decode($photo);
         $filename = uniqid() . '.png';
-        $file = '../public/img/user-photo/' . $filename;
+        $file = '../public/img/umkm-photo/' . $filename;
         file_put_contents($file, $data);
 
         // get data user
-        $sql = "UPDATE umkm SET umkm_foto = '$filename' WHERE id_akun = '$idakun'";
+        $sql = "UPDATE umkm SET umkm_foto = '$filename' WHERE nama_umkm = '$namaumkm'";
         $result = $conn->query($sql);
 
         // jika foto profile berhasil diupdate
         if ($result === true) {
-            $sql = "SELECT umkm_foto FROM umkm WHERE id_akun = '$idakun' LIMIT 1";
+            $sql = "SELECT umkm_foto FROM umkm WHERE nama_umkm = '$namaumkm' LIMIT 1";
             $result = $conn->query($sql);
             $photo = $result->fetch_assoc();
 
