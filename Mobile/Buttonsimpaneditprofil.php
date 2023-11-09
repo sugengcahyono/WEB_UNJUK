@@ -19,13 +19,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $kodeotp = $_POST['Kode_OTP'];
     $level = $_POST['Level'];
     
+    // Validasi nama (hanya huruf)
+    if (!preg_match("/^[a-zA-Z ]+$/", $namauser)) {
+        $response = array("status" => "error", "message" => "Nama hanya boleh mengandung huruf dan spasi");
+        echo json_encode($response);
+        exit;
+    }
+
+    // Validasi nomor handphone (minimal 11 digit, maksimal 13 digit angka)
+    if (!preg_match("/^\d{11,13}$/", $notelpuser)) {
+        $response = array("status" => "error", "message" => "Nomor handphone harus terdiri dari 11 hingga 13 digit angka");
+        echo json_encode($response);
+        exit;
+    }
 
     // get data user
-    $sql = "UPDATE akun SET nama_user = '$namauser', notelp_user = '$notelpuser ', alamat_user = '$alamatuser', user_foto = '$userfoto' WHERE email = '$email'";
+    $sql = "UPDATE akun SET nama_user = '$namauser', notelp_user = '$notelpuser', alamat_user = '$alamatuser', user_foto = '$userfoto' WHERE email = '$email'";
     $result = $conn->query($sql);
 
     if ($result === true) {
-        $response = array("status" => "success", "message" => "Data Profil Berhasil diubah");
+
+        $sql = "SELECT * FROM akun WHERE email = '$email' LIMIT 1";
+        $result = $conn->query($sql);
+        $data = $result->fetch_assoc();
+
+
+        $response = array("status" => "success", "message" => "Data Profil Berhasil diubah", "data"=>$data);
     } else {
         $response = array("status" => "error", "message" => "Data Profil Gagal diubah -> $sql", "error_details" => $conn->error);
     }

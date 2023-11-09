@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
    
     // Lakukan kueri SQL untuk memeriksa apakah email ada dalam database
-    $query = "SELECT * FROM produk WHERE id_umkm = '$idumkm'";
+    $query = "SELECT * FROM produk WHERE id_umkm = '$idumkm' ORDER BY id_produk desc";
 
     $result = $conn->query($query);
 
