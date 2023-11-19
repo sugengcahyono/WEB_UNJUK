@@ -3,7 +3,7 @@
  * Digunakan untuk mengirimkan kode otp ke email user
  */
 
-require '../../../vendor/autoload.php'; 
+require '../../vendor/autoload.php'; 
 require "../../koneksi.php";
 require 'EmailSender.php';
 

@@ -19,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $umkmfoto = $_POST['umkm_foto'];
     $idakun = $_POST['id_akun'];
 
-    // Validasi nama UMKM (hanya huruf)
-    if (!preg_match("/^[a-zA-Z ]+$/", $namaumkm)) {
-        $response = array("status" => "error", "message" => "Nama UMKM hanya boleh mengandung huruf dan spasi");
+      // Validasi nama UMKM (hanya huruf, 5-30 karakter, tidak mengandung emotikon dan karakter khusus)
+      if (!preg_match("/^[a-zA-Z0-9 ]{5,30}$/", $namaumkm) || ctype_digit($namaumkm) || preg_match("/[^\w\s]/", $namaumkm)) {
+        $response = array("status" => "error", "message" => "Nama UMKM harus terdiri dari 5-30 karakter, dapat mengandung huruf dan angka, tapi tidak boleh hanya angka, dan tidak boleh mengandung emotikon atau karakter khusus");
         echo json_encode($response);
         exit;
     }
@@ -36,6 +36,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validasi nomor telepon (minimal 11 digit, maksimal 13 digit angka)
     if (!preg_match("/^\d{11,13}$/", $notelpumkm)) {
         $response = array("status" => "error", "message" => "Nomor telepon harus terdiri dari 11 hingga 13 digit angka");
+        echo json_encode($response);
+        exit;
+    }
+
+        // Validasi Jenis Usaha
+    if (empty($jenisusahaumkm) || $jenisusahaumkm === "Pilih Jenis Usaha") {
+        $response = array("status" => "error", "message" => "Silakan pilih jenis usaha");
+        echo json_encode($response);
+        exit;
+    }
+
+        // Validasi alamat (maksimal 90 karakter)
+    if (strlen($alamatumkm) > 90) {
+        $response = array("status" => "error", "message" => "Alamat maksimal 90 karakter");
         echo json_encode($response);
         exit;
     }

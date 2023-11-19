@@ -21,6 +21,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $gambarproduk2 = $_POST['gambar_produk2'];
     $gambarproduk3 = $_POST['gambar_produk3'];
 
+         // Validasi PIRT
+         if ($pirtproduk !== '-' && !preg_match('/^[\d-]{16}$/', $pirtproduk)) {
+            $response = array("status" => "error", "message" => "Format PIRT tidak valid");
+            echo json_encode($response);
+            exit;
+        }
+    
+        // Validasi BPOM
+        if ($bpomproduk !== '-' && !preg_match('/^[\d-]{15}$/', $bpomproduk)) {
+            $response = array("status" => "error", "message" => "Format BPOM tidak valid");
+            echo json_encode($response);
+            exit;
+        }
+    
+        // Validasi ID Halal
+        if ($idhalalproduk !== '-' && !preg_match('/^[\d-]{14}$/', $idhalalproduk)) {
+            $response = array("status" => "error", "message" => "Format ID Halal tidak valid");
+            echo json_encode($response);
+            exit;
+        }
+
     // Menambahkan kode untuk meng-handle upload gambar
 
     $filename1 = $filename2 = $filename3 = "";
@@ -33,11 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $filename1 = uniqid() . '.png';
         $file1 = '../public/img/produk-photo/' . $filename1;
         file_put_contents($file1, $data);
-    } else {
-        $response = array("status" => "error", "message" => "Gambar produk ke-1 harus diisi");
-        echo json_encode($response);
-        exit; // Keluar dari skrip jika gambar ke-1 kosong
-    }
+    } 
 
     // saving photo2
     if (!empty($gambarproduk2)) {

@@ -19,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $kodeotp = $_POST['Kode_OTP'];
     $level = $_POST['Level'];
     
-    // Validasi nama (hanya huruf)
-    if (!preg_match("/^[a-zA-Z ]+$/", $namauser)) {
-        $response = array("status" => "error", "message" => "Nama hanya boleh mengandung huruf dan spasi");
+    // Validasi nama (hanya huruf, 3-30 karakter)
+    if (!preg_match("/^[a-zA-Z ]{3,30}$/", $namauser)) {
+        $response = array("status" => "error", "message" => "Nama hanya boleh mengandung huruf dan spasi, minimal 3 karakter, maksimal 30 karakter");
         echo json_encode($response);
         exit;
     }
@@ -29,6 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validasi nomor handphone (minimal 11 digit, maksimal 13 digit angka)
     if (!preg_match("/^\d{11,13}$/", $notelpuser)) {
         $response = array("status" => "error", "message" => "Nomor handphone harus terdiri dari 11 hingga 13 digit angka");
+        echo json_encode($response);
+        exit;
+    }
+
+        // Validasi alamat (maksimal 90 karakter)
+    if (strlen($alamatuser) > 90) {
+        $response = array("status" => "error", "message" => "Alamat maksimal 90 karakter");
         echo json_encode($response);
         exit;
     }
