@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         !preg_match('/[a-z]/', $newPassword) || // Mengandung huruf kecil
         !preg_match('/[A-Z]/', $newPassword) || // Mengandung huruf besar
         !preg_match('/[0-9]/', $newPassword) || // Mengandung angka
-        !preg_match('/[!@#$%^&*(),.?":{}|<>]/', $newPassword) // Mengandung simbol
+        !preg_match('/[!@#$%^&*(),.?":{}|<>_]/', $newPassword) // Mengandung simbol
     ) {
         $response = array("status" => "error", "message" => "Password baru tidak memenuhi persyaratan");
         echo json_encode($response);
